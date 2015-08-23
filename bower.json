@@ -1,0 +1,29 @@
+{
+  "name": "sanctuary-ng",
+  "version": "1.0.0",
+  "homepage": "https://github.com/20CM/Sanctuary-ng",
+  "main": "index.js",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "authors": [
+    "oranzhang"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.4",
+    "angular-animate": "~1.4.4",
+    "angular-route": "~1.4.4",
+    "animate.css": "~3.4.0",
+    "font-awesome": "fontawesome#~4.4.0",
+    "jquery": "~2.1.4"
+  }
+}
