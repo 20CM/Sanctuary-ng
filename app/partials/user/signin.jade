@@ -1,0 +1,18 @@
+.row
+  .col-lg-12
+    .panel.panel-primary
+      .panel-heading
+        strong Signin
+      .panel-body
+        form.form-horizontal(role='form', ng-submit='signin()')
+          .form-group
+            label.col-sm-2.control-label(for='username') username
+            .col-sm-10
+              input#username.form-control(type='username', placeholder='username', ng-model='username')
+          .form-group
+            label.col-sm-2.control-label(for='password') Password
+            .col-sm-10
+              input#password.form-control(type='password', placeholder='Password', ng-model='password')
+          .form-group
+            .col-sm-offset-2.col-sm-10
+              button.btn.btn-default(type='submit') Sign in
