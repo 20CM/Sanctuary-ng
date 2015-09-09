@@ -3,7 +3,7 @@
 'use strict';
 
 
-  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies']);
+  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies', 'angular-md5']);
 
   snApp.config([
     '$locationProvider',
@@ -14,10 +14,6 @@
       $locationProvider.hashPrefix('!');
       // routes
       $routeProvider
-        .when("/", {
-          templateUrl: "./partials/partial1.html",
-          controller: "MainController"
-        })
         .when("/signin", {
           templateUrl: './partials/user/signin.html',
           controller: "UserController"
@@ -28,10 +24,26 @@
         })
         .when("/users", {
           templateUrl: './partials/user/gallery.html',
-          controller: "UserController"
+          controller: "UserController",
+          page_mode: 'user_list'
+        })
+        .when("/user/:pk", {
+          templateUrl: './partials/user/view.html',
+          controller: "UserController",
+          page_mode: 'user_page'
+        })
+        .when("/topics", {
+          templateUrl: './partials/topic/list.html',
+          controller: "TopicController",
+          page_mode: 'topic_list'
+        })
+        .when("/topics/:page", {
+          templateUrl: './partials/topic/list.html',
+          controller: "TopicController",
+          page_mode: 'topic_list'
         })
         .otherwise({
-           redirectTo: '/'
+           redirectTo: '/topics'
         });
       $httpProvider.interceptors.push(['$q', '$location', '$localStorage', function($q, $location, $localStorage) {
         return {
@@ -67,9 +79,8 @@
     };
   }])
   .controller('UserController', [
-    '$rootScope', '$scope', '$location', '$localStorage', '$http', 'User',
-    function($rootScope, $scope, $location, $localStorage, $http, User) {
- 
+    '$rootScope', '$scope', '$route' ,'$location', '$localStorage', '$http', 'User', 'Topic',
+    function($rootScope, $scope, $route, $location, $localStorage, $http, User, Topic) {
         $scope.signin = function() {
             var formData = {
                 username: $scope.username,
@@ -86,7 +97,6 @@
                 }
             });
         };
- 
         $scope.signup = function() {
             var formData = {
                 username: $scope.username,
@@ -114,7 +124,6 @@
                 $rootScope.error = 'Failed to signup';
             });
         };
- 
         $scope.me = function() {
             User.me(function(res) {
                 $scope.myDetails = res;
@@ -122,7 +131,6 @@
                 $rootScope.error = 'Failed to fetch details';
             });
         };
- 
         $scope.logout = function() {
             User.logout(function() {
                 window.location = "/";
@@ -130,14 +138,44 @@
                 alert("Failed to logout!");
             });
         };
-
-        User.query(function(res){
-          $scope.users = res;
-        }, function() {
-          console.log("error");
-        });
+        if ($route.current.$$route.page_mode == "user_list") {
+          User.query(function(res){
+            $scope.users = res;
+          }, function() {
+            console.log("error");
+          });
+        }
+        if ($route.current.$$route.page_mode == "user_page") {
+          /*User*/
+        }
+        $scope.user = $localStorage.user;
+    }
+  ])
+  .controller('TopicController', ['$scope', '$localStorage', '$route', '$routeParams', 'User', 'Topic', function($scope, $localStorage, $route, $routeParams, User, Topic){
+    $scope.getUserInfo = function(id) {
+      var r = {};
+      r = User.queryUser(id, function(res){return res.data;}, function(){return {};}).$$state;
+      return r;
+    };
+    if (typeof $routeParams.page !== 'undefined') {}
+    if ($route.current.$$route.page_mode == "topic_list") {
+      if (typeof $routeParams.page !== 'undefined') {
+        $scope.list_page = 1;
+      } else {
+        $scope.list_page = $routeParams.page;
+      }
+      Topic.query($scope.list_page, function(res){
+        $scope.topics = res.data;
+      }, function(res){
+        alert("fuck you");
+        window.location = "/";
+      });
+    }
+    if ($route.current.$$route.page_mode == 'topic_view') {
 
     }
-  ]);
-
+    if ($route.current.$$route.page_mode == 'topic_list_a_la_tag') {
+      
+    }
+  }]);
 }());

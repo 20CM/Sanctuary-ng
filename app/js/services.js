@@ -1,27 +1,33 @@
 var snServices = angular.module('snServices', ['ngStorage']);
 
-snServices.factory('User', ['$http', '$localStorage', 
+snServices
+
+.factory('User', ['$http', '$localStorage', 
   function($http, $localStorage){
   	var urlFix = 'http://not.only.20cm.me/api/';
-  	function changeUser(user) {
-      angular.extend(currentUser, user);
+  	function changeUser(u) {
+      angular.extend(currentUser, u);
     }
     function getUser() {
       var storedUser = $localStorage.user;
-      var user = {};
+      var user;
       if (storedUser !== undefined) {
-    	 user = storedUser;
+        $http.get(urlFix + 'users/' + storedUser.id ).then(function(r){
+          user = angular.extend(storedUser, r.data);
+        }, function(){alert("Error!");window.location = "/";});
       }
       return user;
     }
   	var currentUser = getUser();
-
   	return {
   	  query: function(success, error) {
         $http.get(urlFix + 'users/', {}).success(success).error(error);
       },
-      queryUser: function(username, success, error) {
-        $http.get(urlFix + 'users/' + username).then(success(), error());
+      queryUser: function(id, success, error) {
+        return $http.get(urlFix + 'users/' + id).then(success, error);
+      },
+      queryUserTopics: function(id, success, error) {
+        $http.get(urlFix + 'topics/', {id: id}).then(success, error);
       },
       save: function(data, success, error) {
         $http.post(urlFix + 'users/', data).then(success, error);
@@ -30,7 +36,6 @@ snServices.factory('User', ['$http', '$localStorage',
         $http.post(urlFix + 'users/obtain_auth_token/', data).success(success).error(error);
       },
       logout: function(success) {
-        changeUser();
         delete $localStorage.user;
         success();
       },
@@ -46,4 +51,28 @@ snServices.factory('User', ['$http', '$localStorage',
         }
       }
   	};
+}])
+.factory('Topic', ['$http', '$localStorage', function($http, $localStorage){
+  var urlFix = 'http://not.only.20cm.me/api/';
+  return {
+    query: function(page, success, error) {
+      $http.get(urlFix + 'topics/', {page: page}).then(success, error);
+    },
+    view: function(q, success, error) {
+    },
+    viewById: function(id, success, error) {
+      $http.get(urlFix + 'topics/' + q, {}).then(function(res){
+        var topic_info;
+        $http.get(urlFix + 'replies/' + q).then(function(res0){
+
+        });
+      }, error);
+    },
+    viewBySlug: function(slug, success, error) {
+
+    },
+    getReplies: function(id, page, success, error) {
+      page = typeof page !== 'undefined' ? page : 1;
+    }
+  };
 }]);

@@ -1,0 +1,88 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700&subset=latin,latin-ext);
+body { 
+  padding-top: 70px; 
+  font-family:  Raleway, Helvetica, Arial, "Segoe UI", "Lucida Grande", "Microsoft YaHei", FreeSans, Arimo, "Hiragino Sans GB", "Hiragino Sans GB W3", "Droid Sans","wenquanyi micro hei", Arial, sans-serif;
+}
+
+.gallery-avatar {
+  margin: 2.27rem;
+  display: inline-table;
+}
+
+.gallery-avatar > p {
+  text-align: center;
+  font-size: .8rem;
+  line-height: 2.3rem;
+}
+.gallery-avatar > p > a {
+  color: #a2a2a2;
+}
+.gallery-avatar > a> img {
+  border-radius: 999rem;
+  box-shadow: 0 0 5px black;
+  transition: all .3s, box-shadow .3s;
+  transition-timing-function: ease-in;
+  position: relative;
+  top: 0px;
+  width: 96px;
+  height: 96px;
+  transition-delay: .1s;
+}
+.gallery-avatar > a > img:hover {
+  box-shadow: 0 0 3px #a2a2a2, 0 0 10px black;
+  top: -1rem;
+}
+.panel-body.topic-list {
+  padding: 0px !important;
+}
+.topic-list-item {
+  padding: 25px 25px 0px 22px;
+}
+.topic-list > .topic-list-item:nth-of-type(even) {
+  background: #f5f5f5;
+}
+.topic-list-title {
+  line-height: 1;
+  margin-top: 4px;
+}
+.topic-list-title a {
+  font-size: 22px;
+  color: #a2a2a2;
+}
+.topic-list-info {
+  display: table-cell;
+  width: 100%;
+  vertical-align: top;
+  padding: .3rem;
+}
+.topic-list-detail {
+  padding-right: 10px;
+}
+.topic-list-image {
+  display: table-cell;
+  width: 100%;
+}
+.topic-list-image img {
+  box-shadow: 0 0 3px black;
+  width:64px;
+  height: 64px;
+  border-radius: 999rem;
+  transition: all .3s, box-shadow .3s;
+  transition-timing-function: ease-in;
+}
+.topic-list-image img:hover {
+  box-shadow: 0 0 3px #a2a2a2, 0 0 10px black;
+}
+p.topic-list-count {
+  background: #6B6A6A;
+  color: #f2f2f2;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  font-size: 14px;
+  border-radius: 999rem;
+  position: relative;
+  top: -16px;
+  box-shadow: 0 0 3px black;
+}
