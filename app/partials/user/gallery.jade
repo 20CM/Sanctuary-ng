@@ -3,6 +3,6 @@
   .panel-body
     .gallery-avatar(ng-repeat="u in users")
       a(href="/#!/user/{{ u.username }}")
-        img(src="http://www.gravatar.com/avatar/{{ u.email | gravatar }}")
+        img(ng-src="http://www.gravatar.com/avatar/{{ u.email | gravatar }}")
       p
         a(href="/#!/user/{{ u.username }}") {{ u.username}}

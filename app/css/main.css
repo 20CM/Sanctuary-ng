@@ -32,7 +32,7 @@ body {
   box-shadow: 0 0 3px #a2a2a2, 0 0 10px black;
   top: -1rem;
 }
-.panel-body.topic-list {
+.panel-body.topic-list, .view-user {
   padding: 0px !important;
 }
 .topic-list-item {
@@ -86,3 +86,41 @@ p.topic-list-count {
   top: -16px;
   box-shadow: 0 0 3px black;
 }
+.view-user-banner {
+  text-align: center;
+  padding: 25px;
+  color: #4e4e4e;
+}
+.view-user-banner img {
+  border-radius: 999rem;
+  box-shadow: 0 0 5px black;
+  transition: all .3s, box-shadow .3s;
+  transition-timing-function: ease-in;
+  margin-bottom: 35px;
+}
+.view-user-banner img:hover {
+  box-shadow: 0 0 3px #a2a2a2, 0 0 10px black;
+}
+.view-user-banner {
+  background-color: #f5f5f5;
+}
+.view-topic .view-topic-title {
+  font-size: 36px;
+}
+.view-topic-heading, .view-topic-avatar {
+  display: table-cell;
+}
+.view-topic-heading {
+  width: 100%;
+  padding-right: 10px
+}
+.view-topic-title p {
+  line-height: 1;
+  margin-bottom: 5px;
+  color: #636363;
+}
+.view-topic-info p {
+  margin: 0;
+}
+
+

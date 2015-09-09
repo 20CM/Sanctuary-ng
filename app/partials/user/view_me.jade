@@ -1,0 +1,27 @@
+.panel.panel-default(ng-init="u = getUserInfo();getUserTopics()")
+  .panel-heading
+    strong
+      | View {{ u.value.username | uppercase}}'s Infomation
+  .panel-body.view-user
+    .view-user-banner
+      img(ng-src="http://www.gravatar.com/avatar/{{ u.value.email | gravatar }}?s=128")
+      p
+        strong {{ u.value.username | uppercase}}
+      p
+        | Joined on {{ u.value.date_joined | date }}
+    .topic-list(ng-init="")
+      .topic-list-item(ng-repeat="t in topics | orderBy: '-last_activity' " ng-init="u = (getUserInfo(t.author))")
+        .topic-list-info
+          p.topic-list-title
+            a(href="/#!/topic/{{ t.id }}") {{ t.title }}
+            span(ng-repeat="g in t.tags")
+              a {{ g }}
+          p.topic-list-detail
+            | Created by 
+            a(href="/#!/user/{{u.value.id}}") {{ u.value.username }}
+            |  at {{ t.created | date: 'yyyy-MM-dd hh:mm:ss EEEE'}}
+        .topic-list-image
+          a(href="/#!/user/{{u.value.id}}")
+            img(ng-src="//www.gravatar.com/avatar/{{ u.value.email | gravatar }}")
+          p.topic-list-count {{t.replies_count}}
+{{user}}

@@ -32,6 +32,11 @@
           controller: "UserController",
           page_mode: 'user_page'
         })
+        .when("/me", {
+          templateUrl: './partials/user/view_me.html',
+          controller: "UserController",
+          page_mode: 'me_page'
+        })
         .when("/topics", {
           templateUrl: './partials/topic/list.html',
           controller: "TopicController",
@@ -41,6 +46,11 @@
           templateUrl: './partials/topic/list.html',
           controller: "TopicController",
           page_mode: 'topic_list'
+        })
+        .when("/topic/:pk", {
+          templateUrl: './partials/topic/view.html',
+          controller: "TopicController",
+          page_mode: 'topic_page'
         })
         .otherwise({
            redirectTo: '/topics'
@@ -79,8 +89,9 @@
     };
   }])
   .controller('UserController', [
-    '$rootScope', '$scope', '$route' ,'$location', '$localStorage', '$http', 'User', 'Topic',
-    function($rootScope, $scope, $route, $location, $localStorage, $http, User, Topic) {
+    '$rootScope', '$scope', '$route' ,'$location', '$localStorage', '$http', '$routeParams','User', 'Topic',
+    function($rootScope, $scope, $route, $location, $localStorage, $http, $routeParams, User, Topic) {
+        $scope.user = $localStorage.user;
         $scope.signin = function() {
             var formData = {
                 username: $scope.username,
@@ -146,9 +157,32 @@
           });
         }
         if ($route.current.$$route.page_mode == "user_page") {
-          /*User*/
+          $scope.getUserInfo = function() {
+            var r = {};
+            r = User.queryUser($routeParams.pk, function(res){return res.data;}, function(){return {};}).$$state;
+            return r;
+          };
+          User.queryUserTopics($routeParams.pk, 1, function(res){
+            $scope.topics = res.data;
+          }, function(res){
+            alert("Error");
+            window.location = "/";
+          });
         }
-        $scope.user = $localStorage.user;
+        if ($route.current.$$route.page_mode == "me_page") {
+          $scope.getUserInfo = function() {
+            var r = {};
+            r = User.queryUser($scope.user.id, function(res){return res.data;}, function(){return {};}).$$state;
+            return r;
+          };
+          User.queryUserTopics($scope.user.id, 1, function(res){
+            $scope.topics = res.data;
+          }, function(res){
+            alert("Error");
+            window.location = "/";
+          });
+        }
+        
     }
   ])
   .controller('TopicController', ['$scope', '$localStorage', '$route', '$routeParams', 'User', 'Topic', function($scope, $localStorage, $route, $routeParams, User, Topic){
@@ -167,12 +201,14 @@
       Topic.query($scope.list_page, function(res){
         $scope.topics = res.data;
       }, function(res){
-        alert("fuck you");
+        alert("Error");
         window.location = "/";
       });
     }
-    if ($route.current.$$route.page_mode == 'topic_view') {
-
+    if ($route.current.$$route.page_mode == 'topic_page') {
+      Topic.view($routeParams.pk, function(res){
+        $scope.t = res.data;
+      }, function(){})
     }
     if ($route.current.$$route.page_mode == 'topic_list_a_la_tag') {
       

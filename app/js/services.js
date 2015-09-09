@@ -26,8 +26,8 @@ snServices
       queryUser: function(id, success, error) {
         return $http.get(urlFix + 'users/' + id).then(success, error);
       },
-      queryUserTopics: function(id, success, error) {
-        $http.get(urlFix + 'topics/', {id: id}).then(success, error);
+      queryUserTopics: function(id, page, success, error) {
+        $http.get(urlFix + 'topics/', {id: id, page: page}).then(success, error);
       },
       save: function(data, success, error) {
         $http.post(urlFix + 'users/', data).then(success, error);
@@ -59,6 +59,7 @@ snServices
       $http.get(urlFix + 'topics/', {page: page}).then(success, error);
     },
     view: function(q, success, error) {
+      $http.get(urlFix + 'topics/' + q, {}).then(success, error);
     },
     viewById: function(id, success, error) {
       $http.get(urlFix + 'topics/' + q, {}).then(function(res){
