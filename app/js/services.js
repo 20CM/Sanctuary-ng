@@ -12,9 +12,9 @@ snServices
       var storedUser = $localStorage.user;
       var user;
       if (storedUser !== undefined) {
-        $http.get(urlFix + 'users/' + storedUser.id ).then(function(r){
+        $http.get(urlFix + 'users/' + storedUser.id  + '/' ).then(function(r){
           user = angular.extend(storedUser, r.data);
-        }, function(){alert("Error!");window.location = "/";});
+        }, function(){alert("Error!");});
       }
       return user;
     }
@@ -24,10 +24,11 @@ snServices
         $http.get(urlFix + 'users/', {}).success(success).error(error);
       },
       queryUser: function(id, success, error) {
-        return $http.get(urlFix + 'users/' + id).then(success, error);
+        return $http.get(urlFix + 'users/' + id + '/').then(success, error);
       },
       queryUserTopics: function(id, page, success, error) {
-        $http.get(urlFix + 'topics/', {id: id, page: page}).then(success, error);
+
+        $http.get(urlFix + 'topics/' + '?author=' + id + '&page=' + page + '/').then(success, error);
       },
       save: function(data, success, error) {
         $http.post(urlFix + 'users/', data).then(success, error);
@@ -45,7 +46,7 @@ snServices
       },
       me: function(success, error) {
         if (currentUser !== {}) {
-          return $http.get(urlFix + '/users/' + currentUser.id, {}).success(success).error(error);
+          return $http.get(urlFix + '/users/' + currentUser.id  + '/', {}).success(success).error(error);
         } else {
           error();
         }
@@ -59,12 +60,12 @@ snServices
       $http.get(urlFix + 'topics/', {page: page}).then(success, error);
     },
     view: function(q, success, error) {
-      $http.get(urlFix + 'topics/' + q, {}).then(success, error);
+      $http.get(urlFix + 'topics/' + q + '/', {}).then(success, error);
     },
     viewById: function(id, success, error) {
-      $http.get(urlFix + 'topics/' + q, {}).then(function(res){
+      $http.get(urlFix + 'topics/' + q + '/', {}).then(function(res){
         var topic_info;
-        $http.get(urlFix + 'replies/' + q).then(function(res0){
+        $http.get(urlFix + 'replies/' + q + '/').then(function(res0){
 
         });
       }, error);
@@ -74,6 +75,10 @@ snServices
     },
     getReplies: function(id, page, success, error) {
       page = typeof page !== 'undefined' ? page : 1;
+      $http({
+        method: 'GET',
+        url: urlFix + 'replies/?topic=' + id + '&page=' + page
+      }).then(success, error);
     }
   };
 }]);

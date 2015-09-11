@@ -2,7 +2,7 @@
   .panel-heading People There
   .panel-body
     .gallery-avatar(ng-repeat="u in users")
-      a(href="/#!/user/{{ u.username }}")
+      a(href="/#!/user/{{ u.id }}")
         img(ng-src="http://www.gravatar.com/avatar/{{ u.email | gravatar }}")
       p
-        a(href="/#!/user/{{ u.username }}") {{ u.username}}
+        a(href="/#!/user/{{ u.id }}") {{ u.username}}

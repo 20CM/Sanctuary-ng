@@ -28,7 +28,7 @@ build/Release
 node_modules
 bower_components
 
-/dist
+dist
 .DS_Store
-/tmp
+tmp
 

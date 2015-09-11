@@ -3,7 +3,7 @@
 'use strict';
 
 
-  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies', 'angular-md5']);
+  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies', 'ngSanitize', 'angular-md5', 'angular-loading-bar']);
 
   snApp.config([
     '$locationProvider',
@@ -166,7 +166,6 @@
             $scope.topics = res.data;
           }, function(res){
             alert("Error");
-            window.location = "/";
           });
         }
         if ($route.current.$$route.page_mode == "me_page") {
@@ -185,7 +184,7 @@
         
     }
   ])
-  .controller('TopicController', ['$scope', '$localStorage', '$route', '$routeParams', 'User', 'Topic', function($scope, $localStorage, $route, $routeParams, User, Topic){
+  .controller('TopicController', ['$scope', '$sanitize', '$localStorage', '$route', '$routeParams', 'User', 'Topic', function($scope, $sanitize, $localStorage, $route, $routeParams, User, Topic){
     $scope.getUserInfo = function(id) {
       var r = {};
       r = User.queryUser(id, function(res){return res.data;}, function(){return {};}).$$state;
@@ -202,13 +201,20 @@
         $scope.topics = res.data;
       }, function(res){
         alert("Error");
-        window.location = "/";
       });
     }
     if ($route.current.$$route.page_mode == 'topic_page') {
+      if (typeof $routeParams.page !== 'undefined') {
+        $scope.page = 1;
+      } else {
+        $scope.page = $routeParams.page;
+      }
       Topic.view($routeParams.pk, function(res){
         $scope.t = res.data;
-      }, function(){})
+        Topic.getReplies($routeParams.pk, $scope.page, function(r){
+          $scope.replies = r.data;
+        }, function(){});
+      }, function(){});
     }
     if ($route.current.$$route.page_mode == 'topic_list_a_la_tag') {
       
