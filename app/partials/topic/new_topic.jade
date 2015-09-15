@@ -1,0 +1,12 @@
+.panel.panel-default.new-topic
+  .panel-heading
+    | Just write down what you want to discuss about in one line~
+  .panel-body
+    form
+      .form-group
+        lable(for="title") 
+        input.form-control(maxlength="50" ng-model="title" type="textarea" placeholder="Markdown disabled.")
+      .form-group
+        tags-input(ng-model="tags" min-length="1")
+      button.btn.btn-default(ng-click="submit()" type="submit") Submit
+

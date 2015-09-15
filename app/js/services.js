@@ -79,6 +79,27 @@ snServices
         method: 'GET',
         url: urlFix + 'replies/?topic=' + id + '&page=' + page
       }).then(success, error);
+    },
+    createReply: function(content, topic, success, error) {
+      $http({
+        method: 'POST',
+        url: urlFix + 'replies/',
+        data: {
+          content: content,
+          topic: topic
+        }
+      }).then(success, error);
+    },
+    createTopic: function(title, tags, success, error) {
+      tags = typeof tags !== 'undefined' ? tags : [];
+      $http({
+        method: 'POST',
+        url: urlFix + 'topics/',
+        data: {
+          title: title,
+          tags: tags
+        }
+      }).then(success, error);
     }
   };
 }]);

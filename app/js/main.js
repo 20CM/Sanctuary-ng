@@ -3,7 +3,7 @@
 'use strict';
 
 
-  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies', 'ngSanitize', 'angular-md5', 'angular-loading-bar']);
+  var snApp = angular.module('snApp', ['ngRoute', 'ngStorage', 'ngAnimate', 'snServices', 'ngCookies', 'ngSanitize', 'angular-md5', 'angular-loading-bar', 'ngTagsInput']);
 
   snApp.config([
     '$locationProvider',
@@ -41,6 +41,11 @@
           templateUrl: './partials/topic/list.html',
           controller: "TopicController",
           page_mode: 'topic_list'
+        })
+        .when("/topic/new", {
+          templateUrl: './partials/topic/new_topic.html',
+          controller: "TopicController",
+          page_mode: "new_topic"
         })
         .when("/topics/:page", {
           templateUrl: './partials/topic/list.html',
@@ -184,12 +189,41 @@
         
     }
   ])
-  .controller('TopicController', ['$scope', '$sanitize', '$localStorage', '$route', '$routeParams', 'User', 'Topic', function($scope, $sanitize, $localStorage, $route, $routeParams, User, Topic){
-    $scope.getUserInfo = function(id) {
-      var r = {};
-      r = User.queryUser(id, function(res){return res.data;}, function(){return {};}).$$state;
-      return r;
+  .controller('TopicController', ['$scope', '$sanitize', '$localStorage', '$route', '$routeParams', '$location', 'User', 'Topic', function($scope, $sanitize, $localStorage, $route, $routeParams, $location, User, Topic){
+    $scope.user = $localStorage.user;
+    var observe;
+    if (window.attachEvent) {
+        observe = function (element, event, handler) {
+            element.attachEvent('on'+event, handler);
+        };
+    }
+    else {
+        observe = function (element, event, handler) {
+            element.addEventListener(event, handler, false);
+        };
+    }
+    $scope.editorInit = function (editor) {
+        var text = document.getElementById(editor);
+        function resize () {
+            text.style.height = 'auto';
+            text.style.height = text.scrollHeight+'px';
+        }
+        /* 0-timeout to get the already changed text */
+        function delayedResize () {
+            window.setTimeout(resize, 0);
+        }
+        observe(text, 'change',  resize);
+        observe(text, 'cut',     delayedResize);
+        observe(text, 'paste',   delayedResize);
+        observe(text, 'drop',    delayedResize);
+        observe(text, 'keydown', delayedResize);
+
+        text.focus();
+        text.select();
+        resize();
+        console.log("Editor loaded.");
     };
+
     if (typeof $routeParams.page !== 'undefined') {}
     if ($route.current.$$route.page_mode == "topic_list") {
       if (typeof $routeParams.page !== 'undefined') {
@@ -209,15 +243,27 @@
       } else {
         $scope.page = $routeParams.page;
       }
-      Topic.view($routeParams.pk, function(res){
-        $scope.t = res.data;
-        Topic.getReplies($routeParams.pk, $scope.page, function(r){
-          $scope.replies = r.data;
+      $scope.getReplies = function() {
+        Topic.view($routeParams.pk, function(res){
+          $scope.t = res.data;
+          Topic.getReplies($routeParams.pk, $scope.page, function(r){
+            $scope.replies = r.data;
+          }, function(){});
         }, function(){});
-      }, function(){});
+      };
+      $scope.submit = function() {
+        Topic.createReply($scope.content, $scope.t.id, function(res){
+          $scope.getReplies();
+          $scope.content = '';
+        }, function(){});
+      };
     }
-    if ($route.current.$$route.page_mode == 'topic_list_a_la_tag') {
-      
+    if ($route.current.$$route.page_mode == 'new_topic') {
+      $scope.submit = function() {
+        Topic.createTopic($scope.title, {}, function(res){
+          $location.path('/topic/' + res.data.id);
+        }, function(){});
+      };
     }
   }]);
 }());
