@@ -1,6 +1,6 @@
 .panel.panel-default
   .panel-heading People There
-  .panel-body
+  .panel-body.gallery-panel
     .gallery-avatar(ng-repeat="u in users")
       a(href="/#!/user/{{ u.id }}")
         img(ng-src="//ruby-china.org/avatar/{{ u.email | gravatar }}.png?s=96&d=404")

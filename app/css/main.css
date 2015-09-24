@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700&subset=latin,latin-ext);
 
+nav.navbar {
+  box-shadow: 0 0 10px rgba(29, 29, 29, 0.8);
+}
+
 /* Make clicks pass-through */
 #loading-bar,
 #loading-bar-spinner {
@@ -114,6 +118,10 @@ body {
   background: #EAECEF;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, .25);
 }
+.gallery-panel {
+  text-align: center;
+}
+
 .gallery-avatar {
   margin: 2.27rem;
   display: inline-table;
@@ -121,8 +129,8 @@ body {
 
 .gallery-avatar > p {
   text-align: center;
-  font-size: .8rem;
-  line-height: 2.3rem;
+  font-size: 1.2rem;
+  line-height: 3.5rem;
 }
 .gallery-avatar > p > a {
   color: #173554;
@@ -154,6 +162,8 @@ body {
 .topic-list-title {
   line-height: 1;
   margin-top: 4px;
+  padding-right: 20px;
+  word-break: break-word;
 }
 .topic-list-title a {
   font-size: 22px;
@@ -231,6 +241,9 @@ p.topic-list-count {
   line-height: 1;
   margin-bottom: 5px;
   color: #173554;
+  overflow: auto;
+  padding-right: 20px;
+  word-break: break-word;;
 }
 .view-topic-info p {
   margin: 0;

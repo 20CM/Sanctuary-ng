@@ -15,6 +15,10 @@ nav.navbar.navbar-default.navbar-fixed-top(ng-controller="UserController as u")
           a(href="/#!/users" data-ng-show="user") Hwo'z here?
       ul.nav.navbar-nav.navbar-right
         li
+          a(href="/#!/topic/new" data-ng-show="user")
+           span.glyphicon.glyphicon-plus
+           |  New Topic
+        li
           a(href="/#!/signin" data-ng-hide="user") Sign in
         li
           a(href="/#!/signup" data-ng-hide="user") Sign up
